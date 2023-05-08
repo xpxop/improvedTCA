@@ -5,7 +5,7 @@ Based on the "[Thrustmaster Boeing TCA Autopilot Control Integration Script for 
 
 # Install
 
-Copy improvedTCA.lua to YOUR_XPLANE_FOLDER\Resources\plugins\FlyWithLua\Scripts
+Download & copy [lua/improvedTCA.lua](https://raw.githubusercontent.com/xpxop/improvedTCA/main/lua/improvedTCA.lua) to YOUR_XPLANE_FOLDER\Resources\plugins\FlyWithLua\Scripts
 
 # Setup
 
