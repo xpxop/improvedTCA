@@ -24,6 +24,7 @@ Assign buttons in X-plane to script commands as shown here:
 Change these variables to adjust the increments/decrements per "click" of the knob:
 
 local normIncr = {1, 1, 100}
+
 local fastIncr = {10, 10, 1000}
 
 Position inside {} defines the values that gets changed by one click:
@@ -43,8 +44,11 @@ minFastTickDT & minNormTickDT values [in s] try to prevent / limit the bouncy be
 minHoldCounterNormTicks & minHoldCounterFastTicks values [in counted hold-button-down ticks] are thresholds to decide wether you are really turning fast or if the knob is just a bit bouncy. If the counter is between Norm and Fast just fire a normal speed change if value >= Fast fire a fast value change. So the lower you set the Fast value the earlier the script fires fast turn value changes. If you set them to low the knob gets sensitive again for bouncing... 
 
 local minFastTickDT = 0.01
+
 local minNormTickDT = 0.05
+
 local minHoldCounterNormTicks = 6
+
 local minHoldCounterFastTicks = 18
 
 Remark: minHoldCounterNormTicks has to be smaller than minHoldCounterFastTicks 
