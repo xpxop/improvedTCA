@@ -54,6 +54,8 @@ if (PLANE_ICAO == "B738" and string.find(AIRCRAFT_PATH, "Laminar")) then
 	altcom = "laminar/B738/autopilot/alt_hld_press"
 	hdgcom = "laminar/B738/autopilot/hdg_sel_press"
 	spdcom = "laminar/B738/autopilot/lvl_chg_press"
+	dataref("thrrev1", "sim/cockpit2/engine/actuators/prop_mode", "writable", 0)
+	dataref("thrrev2", "sim/cockpit2/engine/actuators/prop_mode", "writable", 1)
 -- Toliss Aircraft
 	elseif (PLANE_ICAO == "A319") or (PLANE_ICAO == "A321") or (PLANE_ICAO == "A346")  then
 	altref = "sim/cockpit/autopilot/altitude"
@@ -373,4 +375,14 @@ create_command("FlyWithLua/improvedboetca/setalts",           -- command's name
   "checkholdset(3)",                                                     -- do nothing during hold
   "")   
 
+create_command("FlyWithLua/boetca/rev1on",			 -- command's name
+  "Reverser #1 on while holding",					 -- description
+  "thrrev1 = 3",												-- set DataRef on first press
+  "thrrev1 = 3",                                                      -- continue while hold
+  "thrrev1 = 1")   			                  					   -- switch back on release
 
+create_command("FlyWithLua/boetca/rev2on",			 -- command's name
+  "Reverser #2 on while holding",					 -- description
+  "thrrev2 = 3",												-- set DataRef on first press
+  "thrrev2 = 3",                                                     -- continue while hold
+  "thrrev2 = 1")   			                  					  -- switch back on release
