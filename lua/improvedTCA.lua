@@ -375,13 +375,13 @@ create_command("FlyWithLua/improvedboetca/setalts",           -- command's name
   "checkholdset(3)",                                                     -- do nothing during hold
   "")   
 
-create_command("FlyWithLua/boetca/rev1on",			 -- command's name
+create_command("FlyWithLua/improvedboetca/rev1on",			 -- command's name
   "Reverser #1 on while holding",					 -- description
   "thrrev1 = 3",												-- set DataRef on first press
   "thrrev1 = 3",                                                      -- continue while hold
   "thrrev1 = 1")   			                  					   -- switch back on release
 
-create_command("FlyWithLua/boetca/rev2on",			 -- command's name
+create_command("FlyWithLua/improvedboetca/rev2on",			 -- command's name
   "Reverser #2 on while holding",					 -- description
   "thrrev2 = 3",												-- set DataRef on first press
   "thrrev2 = 3",                                                     -- continue while hold
