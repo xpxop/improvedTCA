@@ -19,21 +19,72 @@ Assign buttons in X-plane to script commands as shown here:
 [btnasgn1]: https://github.com/xpxop/improvedTCA/blob/main/imgs/assign_buttons1.JPG "button assignment screenshot 1"
 [btnasgn2]: https://github.com/xpxop/improvedTCA/blob/main/imgs/assign_buttons2.JPG "button assignment screenshot 2"
 
+### New in v1.0.1
+* Thanks to suggestions form [BorisEagle](https://github.com/BorisEagle) for the zibomod you can now also assign different reverser levels (idle, 25%, 50%, 100%) to the two reverser knobs - just assign the commands "Reverser #1 (#2) xxx while holding" to the respective buttons.
+
+* The "knob press" function has some nice new features:
+  * short / click like press -> behaves as in v1.0.0
+  * slightly longer press -> a different command can be assigned (in the script - not yet done)
+  * a long press -> switches knob to secondary mode: Based on the mode selection (SPD, HDG, ALT) the knob now modifies (BARO, CRS, VS) and short click fires different commands. So far this is only implemented for the zibomod. After 3 seconds of inactivity (no pressing or turning the knob) the knob switches back to primary mode, switching to a different mode via "the ring thing" also always goes to primary mode. The times for what is slighty longer and long press, aswell as the inactivity timeout can be configured in the script (see under Advanced)
+
 ## Advanced
 
-Change these variables to adjust the increments/decrements per "click" of the knob:
+### Increments for normal/fast mode
+**NEW in v1.0.1**
+Change these variables (only the values not the names) to adjust the increments/decrements per "click" of the knob:
 
-local normIncr = {1, 1, 100}
+```lua
+increments = {
+	spd = {
+		normal = 1,
+		fast = 10,		
+	},
+	hdg = {
+		normal = 1,
+		fast = 10,		
+	},
+	alt = {
+		normal = 100,
+		fast = 1000,		
+	},
+	spd2nd = {
+		normal = 0.01,
+		fast = 0.1,		
+	},
+	hdg2nd = {
+		normal = 1,
+		fast = 10,		
+	},
+	alt2nd = {
+		normal = 50,
+		fast = 100,		
+	}
+}
+```
 
-local fastIncr = {10, 10, 1000}
-
-Position inside {} defines the values that gets changed by one click:
-1 = SPD, 2 = HDG, 3 = ALT -> {SPD, HDG, ALT}
-
-normIncr -> for normal / slow knob turn speed
-fastIncr -> for fast knob turn speed
+normal for normal / slow knob turn speed
+fast for fast knob turn speed
 
 Remark: "Fast" is detected via the "button hold" that the knob sends at higher turn speeds
+
+### Knob press behavior
+**NEW in v1.0.1**
+
+Change
+
+```lua
+local minSelHoldTime = 0.5
+local minSelLongHoldTime = 2
+local secondaryModeTimeOut = 3
+```
+
+to values (seconds) that work for you.
+
+minSELHoldTime -> after this amount of seconds holding down the knob button (sel) the hold action will be fired (not used yet)
+
+minSelLongHoldTime -> long hold time in seconds -> after this time the knob switches to the secondary mode
+
+secondaryModeTimeOut -> if you do not press the knob or turn the knob for this amount of seconds the knob defaults back to primary mode
 
 ## Adjust the fast / normal speed responsiveness
 
@@ -43,12 +94,11 @@ minFastTickDT & minNormTickDT values [in s] try to prevent / limit the bouncy be
 
 minHoldCounterNormTicks & minHoldCounterFastTicks values [in counted hold-button-down ticks] are thresholds to decide wether you are really turning fast or if the knob is just a bit bouncy. If the counter is between Norm and Fast just fire a normal speed change if value >= Fast fire a fast value change. So the lower you set the Fast value the earlier the script fires fast turn value changes. If you set them to low the knob gets sensitive again for bouncing... 
 
+```lua
 local minFastTickDT = 0.01
-
 local minNormTickDT = 0.05
-
 local minHoldCounterNormTicks = 6
-
 local minHoldCounterFastTicks = 18
+```
 
 Remark: minHoldCounterNormTicks has to be smaller than minHoldCounterFastTicks 
