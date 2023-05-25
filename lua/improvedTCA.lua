@@ -383,16 +383,21 @@ function round(num, numDecimalPlaces)
 	return math.floor(num * mult + 0.5) / mult
 end
 
+-- function for future more complex value requests
+function get_current_value(knobRef)
+	return get(knobRef.turnRef)
+end
+
 function calcValidSPD(knobRef, chg)
-	return get(knobRef.turnRef) + chg
+	return get_current_value(knobRef) + chg
 end
 
 function calcValidHDG(knobRef, chg)
-	return (get(knobRef.turnRef) + chg) % 360
+	return (get_current_value(knobRef) + chg) % 360
 end
 
 function calcValidALT(knobRef, chg)
-	val = get(knobRef.turnRef) + chg
+	val = get_current_value(knobRef) + chg
 	val = math.ceil(val/100)*100
 	if val >= maxalt then
 	-- maxalt - 1 to be compatible with original script
@@ -415,9 +420,9 @@ function calcValidSPD2nd(knobRef, chg)
 		end
 	end
 	if modifyVal then
-		val = val + chg * knobRef.turnValueModifier
+		val = get_current_value(knobRef) + chg * knobRef.turnValueModifier
 	else
-		val = val + chg
+		val = get_current_value(knobRef) + chg
 	end
 	return round(val, 2)
 end
@@ -427,7 +432,7 @@ function calcValidHDG2nd(knobRef, chg)
 end
 
 function calcValidALT2nd(knobRef, chg)
-	return get(knobRef.turnRef) + chg
+	return get_current_value(knobRef) + chg
 end
 
 
