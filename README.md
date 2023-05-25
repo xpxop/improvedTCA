@@ -102,3 +102,8 @@ local minHoldCounterFastTicks = 18
 ```
 
 Remark: minHoldCounterNormTicks has to be smaller than minHoldCounterFastTicks 
+
+# Troubleshooting
+
+* Cannot find the _improvedboetca_ section under FlyWithLua in XPlane to assign functions to buttons!
+  * Try to reload all lua scripts via the Plugins->FlyWithLUA menu while a plane is loaded
