@@ -217,13 +217,18 @@ if(PLANE_ICAO == "B736") or (PLANE_ICAO == "B737") or (PLANE_ICAO == "B738" and 
 	  "reverser_2 = 0")   	  
 
 -- Toliss Aircraft
-	elseif (PLANE_ICAO == "A319") or (PLANE_ICAO == "A321") or (PLANE_ICAO == "A346")  then
-
-	knobRefs["alt"].pressRef = "AirbusFBW/PushVSSel"
-	knobRefs["hdg"].pressRef = "AirbusFBW/PullHDGSel"
-	knobRefs["spd"].pressRef = "AirbusFBW/PullAltitude"
+elseif ((PLANE_ICAO == "A319") or (PLANE_ICAO == "A321") or (PLANE_ICAO == "A346")) and string.find(string.lower(AIRCRAFT_PATH), "toliss") then
+	-- AirbusFBW/ALT100_1000
+	knobRefs["alt"].pressRef = "AirbusFBW/PushAltitude"
+	knobRefs["alt"].holdRef = "AirbusFBW/PullAltitude"
+	knobRefs["alt2nd"].pressRef = "AirbusFBW/PushVSSel"
+	knobRefs["alt2nd"].holdRef = "AirbusFBW/PullVSSel"
+	knobRefs["hdg"].pressRef = "AirbusFBW/PushHDGSel"
+	knobRefs["hdg"].holdRef = "AirbusFBW/PullHDGSel"
+	knobRefs["spd"].pressRef = "AirbusFBW/PushSPDSel"
+	knobRefs["spd"].holdRef = "AirbusFBW/PullSPDSel"
 -- Inibuilds Aircraft
-	elseif (PLANE_ICAO == "A306") or (PLANE_ICAO == "A310") or (PLANE_ICAO == "A3ST")  then
+elseif (PLANE_ICAO == "A306") or (PLANE_ICAO == "A310") or (PLANE_ICAO == "A3ST")  then
 	knobRefs["alt"].turnRef = "A300/MCDU/altitude_dial"
 	knobRefs["hdg"].turnRef = "A300/MCDU/heading_dial"
 	knobRefs["spd"].turnRef = "A300/MCDU/airspeed_dial"
@@ -231,7 +236,7 @@ if(PLANE_ICAO == "B736") or (PLANE_ICAO == "B737") or (PLANE_ICAO == "B738" and 
 	knobRefs["hdg"].pressRef = "A300/MCDU/heading_select"
 	knobRefs["spd"].pressRef = "A300/MCDU/level_change"
 -- Felis 742
-	elseif (PLANE_ICAO == "B742") then
+elseif (PLANE_ICAO == "B742") then
 	knobRefs["alt"].turnRef = "B742/AP_panel/altitude_set"
 	knobRefs["hdg"].turnRef = "B742/AP_panel/heading_set"
 	knobRefs["spd"].turnRef = "B742/AP_panel/AT_spd_set_rotary"
@@ -251,7 +256,7 @@ if(PLANE_ICAO == "B736") or (PLANE_ICAO == "B737") or (PLANE_ICAO == "B738" and 
 		"",                                                     -- do nothing during hold
 		"")   			                  					  -- do nothing on release
 -- FlightFactor 757 - FF do have there own commands for boeing tca
-	elseif (PLANE_ICAO == "B752") or (PLANE_ICAO == "B753") then
+elseif (PLANE_ICAO == "B752") or (PLANE_ICAO == "B753") then
 	knobRefs["alt"].turnRef = "757Avionics/ap/alt_act"
 	knobRefs["hdg"].turnRef = "757Avionics/ap/hdg_act"
 	knobRefs["spd"].turnRef = "757Avionics/ap/spd_act"
@@ -259,7 +264,7 @@ if(PLANE_ICAO == "B736") or (PLANE_ICAO == "B737") or (PLANE_ICAO == "B738" and 
 	knobRefs["hdg"].pressRef = "1-sim/command/AP/hdgConfButton_button"
 	knobRefs["spd"].pressRef = "1-sim/comm/AP/flchButton"
 -- Colimata Concorde
-	elseif (PLANE_ICAO == "CONC") then
+elseif (PLANE_ICAO == "CONC") then
 	knobRefs["alt"].turnRef = "Colimata/CON_AP_sw_ALT_select_ft_i"
 	knobRefs["hdg"].turnRef = "Colimata/CON_AP_sw_ap1_hdg_trk_DISPLAY_i"
 	knobRefs["spd"].turnRef = "Colimata/CON_AP_sw_AT_knots_i"
@@ -286,7 +291,7 @@ if(PLANE_ICAO == "B736") or (PLANE_ICAO == "B737") or (PLANE_ICAO == "B738" and 
 		"")   			                  					  -- do nothing on release
 	maxalt = 60001
 -- Rotate MD80
-	elseif (PLANE_ICAO == "MD88") then
+elseif (PLANE_ICAO == "MD88") then
 
 	knobRefs["hdg"].turnRef = "Rotate/md80/autopilot/hdg_sel_deg_pilot"
 	knobRefs["spd"].turnRef = "Rotate/md80/autopilot/at_target_speed"
@@ -294,7 +299,7 @@ if(PLANE_ICAO == "B736") or (PLANE_ICAO == "B737") or (PLANE_ICAO == "B738" and 
 	knobRefs["hdg"].pressRef = "Rotate/md80/autopilot/hdg_sel_mode"
 	knobRefs["spd"].pressRef = "Rotate/md80/autopilot/ias_mach_sel"
 -- Rotate MD11
-	elseif (PLANE_ICAO == "MD11") then
+elseif (PLANE_ICAO == "MD11") then
 	knobRefs["alt"].turnRef = "Rotate/aircraft/systems/gcp_alt_presel_ft"
 	altrefmd11 = "Rotate/aircraft/systems/gcp_alt_sel_ft"
 	knobRefs["hdg"].turnRef = "Rotate/aircraft/systems/gcp_hdg_presel_deg"
@@ -303,7 +308,7 @@ if(PLANE_ICAO == "B736") or (PLANE_ICAO == "B737") or (PLANE_ICAO == "B738" and 
 	knobRefs["hdg"].pressRef = "Rotate/aircraft/controls_c/fgs_hdg_mode_sel_dn"
 	knobRefs["spd"].pressRef = "Rotate/aircraft/controls_c/fgs_spd_sel_mode_dn"
 -- JustFlight Bae-146
-	elseif (PLANE_ICAO == "B461") or (PLANE_ICAO == "B462") or (PLANE_ICAO == "B463") then
+elseif (PLANE_ICAO == "B461") or (PLANE_ICAO == "B462") or (PLANE_ICAO == "B463") then
 
 	knobRefs["spd"].turnRef = "thranda/anim/ASIbug4_pilot"
 	knobRefs["alt"].pressRef = "thranda/buttons/Button08"
@@ -311,7 +316,7 @@ if(PLANE_ICAO == "B736") or (PLANE_ICAO == "B737") or (PLANE_ICAO == "B738" and 
 	knobRefs["spd"].pressRef = "thranda/buttons/Button16"
 	maxalt = 35001
 -- SSG E Jets
-	elseif (PLANE_ICAO == "E170") or (PLANE_ICAO == "E195") then
+elseif (PLANE_ICAO == "E170") or (PLANE_ICAO == "E195") then
 	knobRefs["alt"].turnRef = "ssg/B748/MCP/mcp_alt_target_act"
 	knobRefs["hdg"].turnRef = "ssg/B748/MCP/mcp_heading_bug_act"
 	knobRefs["spd"].turnRef = "ssg/B748/MCP/mcp_ias_mach_act"
@@ -319,23 +324,23 @@ if(PLANE_ICAO == "B736") or (PLANE_ICAO == "B737") or (PLANE_ICAO == "B738" and 
 	knobRefs["hdg"].pressRef = "SSG/EJET/MCP/HDG_COMM"
 	knobRefs["spd"].pressRef = "SSG/EJET/MCP/FLCH_COMM"
 -- SSG B748
-	elseif (PLANE_ICAO == "B748") then
+elseif (PLANE_ICAO == "B748") then
 	knobRefs["alt"].turnRef = "ssg/B748/MCP/mcp_alt_target_act"
 	knobRefs["hdg"].turnRef = "ssg/B748/MCP/mcp_heading_bug_act"
 	knobRefs["spd"].turnRef = "ssg/B748/MCP/mcp_ias_mach_act"
 
 -- Msparks B744
-	elseif (PLANE_ICAO == "B744") then
+elseif (PLANE_ICAO == "B744") then
 	knobRefs["alt"].turnRef = "laminar/B747/autopilot/heading/altitude_dial_ft"
 	knobRefs["hdg"].turnRef = "laminar/B747/autopilot/heading/degrees"
 	knobRefs["spd"].turnRef = "laminar/B747/autopilot/ias_dial_value"
 
 -- Ixeg 733
-	elseif (PLANE_ICAO == "B733") then
+elseif (PLANE_ICAO == "B733") then
 	knobRefs["alt"].turnRef = "sim/cockpit2/autopilot/altitude_dial_ft"
 
 -- FlyJSim B732
-	elseif (PLANE_ICAO == "B732") then
+elseif (PLANE_ICAO == "B732") then
 	knobRefs["alt"].turnRef = "sim/cockpit2/autopilot/altitude_dial_ft"
 
 	knobRefs["alt"].pressRef = "FlyWithLua/b732/altsel"
