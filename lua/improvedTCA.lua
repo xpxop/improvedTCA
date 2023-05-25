@@ -575,6 +575,13 @@ function checkholdset(modeid)
 	end
 end
 
+function draw_improvedtca_info()
+	if secondaryModeActive then
+		draw_string(50, 50, "Secondary knob mode active", "red")
+	end
+end
+
+do_every_draw("draw_improvedtca_info()")
 
 create_command("FlyWithLua/improvedboetca/turnincr",           -- command's name
   "Value Increase",                                        -- description
