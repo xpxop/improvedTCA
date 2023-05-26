@@ -3,6 +3,21 @@ Improved Thrustmaster Boeing TCA Autopilot Control Integration LUA Script for X-
 
 Based on the "[Thrustmaster Boeing TCA Autopilot Control Integration Script for X-plane by Andrew Spink (theegg52)](https://forums.x-plane.org/index.php?/files/file/79047-flywithlua-script-for-thrustmaster-boeing-tca-quadrant-autopilot/)"
 
+# Changelog
+
+## New in Experimental
+
+* Hopefully better smoothing of the knob
+
+## New in v1.0.1
+* Thanks to suggestions form [BorisEagle](https://github.com/BorisEagle) for the zibomod you can now also assign different reverser levels (idle, 25%, 50%, 100%) to the two reverser knobs - just assign the commands "Reverser #1 (#2) xxx while holding" to the respective buttons.
+
+* The "knob press" function has some nice new features:
+  * short / click like press -> behaves as in v1.0.0
+  * slightly longer press -> a different command can be assigned (in the script - not yet done)
+  * a long press -> switches knob to secondary mode: Based on the mode selection (SPD, HDG, ALT) the knob now modifies (BARO, CRS, VS) and short click fires different commands. So far this is only implemented for the zibomod. After 3 seconds of inactivity (no pressing or turning the knob) the knob switches back to primary mode, switching to a different mode via "the ring thing" also always goes to primary mode. The times for what is slighty longer and long press, aswell as the inactivity timeout can be configured in the script (see under Advanced)
+
+
 # Install
 
 Download & copy [lua/improvedTCA.lua](https://github.com/xpxop/improvedTCA/blob/main/lua/improvedTCA.lua) to YOUR_XPLANE_FOLDER\Resources\plugins\FlyWithLua\Scripts
@@ -37,11 +52,11 @@ Change these variables (only the values not the names) to adjust the increments/
 increments = {
 	spd = {
 		normal = 1,
-		fast = 10,		
+		fast = 2,		
 	},
 	hdg = {
 		normal = 1,
-		fast = 10,		
+		fast = 2,		
 	},
 	alt = {
 		normal = 100,
@@ -53,7 +68,7 @@ increments = {
 	},
 	hdg2nd = {
 		normal = 1,
-		fast = 10,		
+		fast = 2,		
 	},
 	alt2nd = {
 		normal = 50,
@@ -88,17 +103,18 @@ secondaryModeTimeOut -> if you do not press the knob or turn the knob for this a
 
 ## Adjust the fast / normal speed responsiveness
 
-Adjusting these values allows you to play with the responsiveness of the knob.
+**NEW/CHANGED in Experimental**
 
-minFastTickDT & minNormTickDT values [in s] try to prevent / limit the bouncy behavior of the knob - lower values result in quicker response but also much more aggressive over-turning / "bouncyness"
-
-minHoldCounterNormTicks & minHoldCounterFastTicks values [in counted hold-button-down ticks] are thresholds to decide wether you are really turning fast or if the knob is just a bit bouncy. If the counter is between Norm and Fast just fire a normal speed change if value >= Fast fire a fast value change. So the lower you set the Fast value the earlier the script fires fast turn value changes. If you set them to low the knob gets sensitive again for bouncing... 
+This new approach to get a smoother knob uses floating average. The knob click to click time (DT) gets checked against 
+the floating average of n = lengthTickValues (default 3). Ff DT is smaller than floating average - maxDeviationSecs - 
+this click gets ignored. Abrupt direction changes are also ignored if direction changes happen in under directionChangeDtThresholdSecs
 
 ```lua
-local minFastTickDT = 0.01
-local minNormTickDT = 0.05
-local minHoldCounterNormTicks = 6
-local minHoldCounterFastTicks = 18
+local maxDeviationSecs = 0.1 -- increase this value to make the knob more responsive (and probably more bouncy)
+local minHoldTimeFastTicksSecs = 0.1 -- increase this value to make the knob wait longer before switching to fast turning mode
+local minHoldTickDtSecs = 0.05 -- decrease this value to get faster fast tick speed
+local directionChangeDtThresholdSecs = 0.5 -- increase this value to make knob less sensitive to sudden direction changes
+local lengthTickValues = 3 -- increase this value to increase the number of values for floating average -> larger values mean slower & smoother, 1 turns that off, must be >= 1
 ```
 
 Remark: minHoldCounterNormTicks has to be smaller than minHoldCounterFastTicks 

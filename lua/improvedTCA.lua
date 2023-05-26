@@ -11,15 +11,15 @@ dataref("TIME", "sim/time/total_running_time_sec")
 local increments = {
 	spd = {
 		normal = 1,
-		fast = 10,		
+		fast = 2,
 	},
 	hdg = {
 		normal = 1,
-		fast = 10,		
+		fast = 2,
 	},
 	alt = {
 		normal = 100,
-		fast = 1000,		
+		fast = 1000,
 	},
 	spd2nd = {
 		normal = 0.01,
@@ -27,7 +27,7 @@ local increments = {
 	},
 	hdg2nd = {
 		normal = 1,
-		fast = 10,		
+		fast = 2,
 	},
 	alt2nd = {
 		normal = 50,
@@ -35,13 +35,16 @@ local increments = {
 	}
 }
 
--- These are empiric values to modulate the fast / slow turn speed detection sensitivity / response a bit
--- Feel free to play around with these but don't expect too much :) the rotary / knob is quite "bouncy"
+-- This is a new approach to get a smoother knob experience
+-- The knob click to click time (DT) gets checked against the floating average of n = lengthTickValues (default 3)
+-- if DT is smaller than floating average - maxDeviationSecs - this click gets ignored
+-- abrupt direction changes are also ignored if direction changes happen in under directionChangeDtThresholdSecs
 
-local minFastTickDT = 0.01
-local minNormTickDT = 0.05
-local minHoldCounterNormTicks = 6
-local minHoldCounterFastTicks = 18
+local maxDeviationSecs = 0.1 -- increase this value to make the knob more responsive (and probably more bouncy)
+local minHoldTimeFastTicksSecs = 0.1 -- increase this value to make the knob wait longer before switching to fast turning mode
+local minHoldTickDtSecs = 0.05 -- decrease this value to get faster fast tick speed
+local directionChangeDtThresholdSecs = 0.5 -- increase this value to make knob less sensitive to sudden direction changes
+local lengthTickValues = 3 -- increase this value to increase the number of values for floating average -> larger values mean slower & smoother, 1 turns that off, must be >= 1
 
 -- These are the times in sec that define the sel / knob click behavior - at the momenent double click is not used;
 local doubleClickTime = 0.5
@@ -52,8 +55,10 @@ local minSelLongHoldTime = 2
 local secondaryModeTimeOut = 3
 
 -- Don't change these
-local lastTickTime = 0
-local holdCounter = 0
+local lastPressTime = 0
+local lastHoldTime = 0
+local lastReleaseTime = 0
+local holdActive = false
 local lastSelClickTime = 0
 local selHoldTime = 0
 local lastMode = 0
@@ -61,6 +66,14 @@ local lastSecondaryModeChangeTime = 0
 local secondaryModeOffset = 3
 local maxMode = 6
 local secondaryModeActive = false
+local lastDirection = 0
+local lastTickValues = {}
+if lengthTickValues <= 0 then
+	lengthTickValues = 1
+end
+for i=1,lengthTickValues do
+	table.insert(lastTickValues, 0)
+end
 
 -- mode ID to mode table - don't change these
 local modes = {
@@ -476,32 +489,49 @@ function changeValue(modeid, direction, fastMode)
 	end
 end
 
-
--- wrapper for normal speed turns
-function normalTurn(direction)
-	if (TIME - lastTickTime) >= minNormTickDT then
-		changeValue(modeset, direction, false)
-		lastTickTime = TIME
-	end	
-end
-
--- wrapper for fast speed turns based on the "button hold" status without release at high turn speeds of the TCA knob
-function fastTurnStart(direction)
-	holdCounter = holdCounter + 1
-	if (TIME - lastTickTime) >= minFastTickDT then
-		if (holdCounter >= minHoldCounterNormTicks and holdCounter < minHoldCounterFastTicks) then
-			changeValue(modeset, direction, false)		    
-			lastTickTime = TIME
-		elseif holdCounter >= minHoldCounterFastTicks then
-			changeValue(modeset, direction, true)			
-			lastTickTime = TIME
-		end
+function averageTick(a)
+	local sum = 0
+	for index, value in ipairs(a) do
+		sum = sum + value
 	end
+	return sum / table.getn(a)
 end
 
+function push_pop(a, e)
+	table.insert(a, 1, e)
+	table.remove(a)
+	return a
+end
 
-function fastTurnStop()
-	holdCounter = 0
+function rotHold(direction)
+	local now = TIME
+	if (now - lastHoldTime > minHoldTickDtSecs) and (now - lastPressTime >= minHoldTimeFastTicksSecs) then
+		changeValue(modeset, direction, true)
+		lastHoldTime = now
+		holdActive = true
+		--print(string.format("HOLD delta time: %.4f direction: %d, last direction: %d", dt, direction, lastDirection))
+	end
+	lastDirection = direction
+end
+
+function rotRelease(direction)
+	local now = TIME
+	local dt = now - lastReleaseTime
+	push_pop(lastTickValues, dt)
+	local avg = averageTick(lastTickValues)
+	if ((lastDirection == direction) or (dt > directionChangeDtThresholdSecs)) and not holdActive then
+		if (dt >= avg - maxDeviationSecs) then
+			changeValue(modeset, direction, false)
+		end
+		lastReleaseTime = now
+		lastDirection = direction
+	end
+	holdActive = false
+end
+
+function rotPress(direction)
+	lastPressTime = TIME
+	--print(string.format("PRESS delta time since release: %.4f direction: %d, last direction: %d", dt, direction, lastDirection))
 end
 
 
@@ -583,17 +613,18 @@ end
 
 do_every_draw("draw_improvedtca_info()")
 
+
 create_command("FlyWithLua/improvedboetca/turnincr",           -- command's name
   "Value Increase",                                        -- description
-  "normalTurn(1)",                                  -- set DataRef on first press
-  "fastTurnStart(1)",                                                     -- do nothing during hold
-  "fastTurnStop()")   			                  					  -- do nothing on release
+  "rotPress(1)",                                  -- first press
+  "rotHold(1)",                                                     --  hold
+  "rotRelease(1)")   			                  					  -- release
   
 create_command("FlyWithLua/improvedboetca/turndecr",           -- command's name
   "Value Decrease",                                        -- description
-  "normalTurn(-1)",                                  -- set DataRef on first press
-  "fastTurnStart(-1)",                                                     -- do nothing during hold
-  "fastTurnStop()")   			                  					  -- do nothing on release
+  "rotPress(-1)",                                  -- first press
+  "rotHold(-1)",                                                     --  hold
+  "rotRelease(-1)")   			                  					  -- release
   
 create_command("FlyWithLua/improvedboetca/modesel",           -- command's name
   "Mode Selector",                                        -- description
