@@ -5,7 +5,7 @@ Based on the "[Thrustmaster Boeing TCA Autopilot Control Integration Script for 
 
 # Changelog
 
-## New in Experimental
+## New in v1.0.2-beta
 
 * Hopefully better smoothing of the knob
 
