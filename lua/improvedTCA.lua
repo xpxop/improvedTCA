@@ -216,6 +216,40 @@ if(PLANE_ICAO == "B736") or (PLANE_ICAO == "B737") or (PLANE_ICAO == "B738" and 
 	  "",                                                      -- continue while hold
 	  "reverser_2 = 0")   	  
 
+-- START_C&P
+-- this is C&P from theegg52's fork of this script https://github.com/theegg52/improvedTCA/blob/main/lua/improvedTCA.lua
+-- have not checked it - if it causes issues delete this part from START_C&P until END_C&P comment
+-- Challenger 650
+elseif (PLANE_ICAO == "CL60") then
+	knobRefs["alt"].turnCommandOnce = true
+	knobRefs["alt"].turnRefUP = "sim/autopilot/altitude_up"
+	knobRefs["alt"].turnRefDN = "sim/autopilot/altitude_down"
+	knobRefs["alt"].pressRef = "sim/autopilot/altitude_hold"
+	knobRefs["hdg"].turnCommandOnce = true
+	knobRefs["hdg"].turnRefUP = "sim/autopilot/heading_up"
+	knobRefs["hdg"].turnRefDN = "sim/autopilot/heading_down"
+	knobRefs["hdg"].pressRef = "sim/autopilot/heading"
+	knobRefs["spd"].turnCommandOnce = true
+	knobRefs["spd"].turnRefUP = "sim/autopilot/airspeed_up"
+	knobRefs["spd"].turnRefDN = "sim/autopilot/airspeed_down"
+	knobRefs["spd"].pressRef = "sim/autopilot/level_change"
+	knobRefs["spd2nd"].turnRef = "sim/cockpit2/gauges/actuators/barometer_setting_in_hg_pilot"
+	knobRefs["spd2nd"].turnCommandOnce = true
+	knobRefs["spd2nd"].turnRefUP = "CL650/DCP/1/baro_up"
+	knobRefs["spd2nd"].turnRefDN = "CL650/DCP/1/baro_down"
+	knobRefs["spd2nd"].pressRef = "CL650/DCP/1/baro_push"
+	knobRefs["hdg2nd"].turnRef = "sim/cockpit/radios/nav1_obs_degm"
+	knobRefs["hdg2nd"].turnCommandOnce = true
+	knobRefs["hdg2nd"].turnRefUP = "CL650/FCP/crs1_up"
+	knobRefs["hdg2nd"].turnRefDN = "CL650/FCP/crs1_down"
+	knobRefs["hdg2nd"].pressRef = "sim/autopilot/approach"
+	knobRefs["alt2nd"].turnRef = "sim/cockpit2/autopilot/vvi_dial_fpm"
+	knobRefs["alt2nd"].turnCommandOnce = true
+	knobRefs["alt2nd"].turnRefUP = "CL650/FCP/vs_pitch_up"
+	knobRefs["alt2nd"].turnRefDN = "CL650/FCP/vs_pitch_down"
+	knobRefs["alt2nd"].pressRef = "sim/autopilot/vertical_speed"
+-- END_C&P
+	
 -- Toliss Aircraft
 elseif ((PLANE_ICAO == "A319") or (PLANE_ICAO == "A321") or (PLANE_ICAO == "A346")) and string.find(string.lower(AIRCRAFT_PATH), "toliss") then
 	-- AirbusFBW/ALT100_1000
