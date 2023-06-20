@@ -36,15 +36,15 @@ local increments = {
 }
 
 -- This is a new approach to get a smoother knob experience
--- The knob click to click time (DT) gets checked against the floating average of n = lengthTickValues (default 3)
--- if DT is smaller than floating average - maxDeviationSecs - this click gets ignored
+-- The knob click to click time (DT) gets checked against the moving average of n = lengthTickValues (default 3)
+-- if DT is smaller than moving average - maxDeviationSecs - this click gets ignored
 -- abrupt direction changes are also ignored if direction changes happen in under directionChangeDtThresholdSecs
 
 local maxDeviationSecs = 0.1 -- increase this value to make the knob more responsive (and probably more bouncy)
 local minHoldTimeFastTicksSecs = 0.1 -- increase this value to make the knob wait longer before switching to fast turning mode
 local minHoldTickDtSecs = 0.05 -- decrease this value to get faster fast tick speed
 local directionChangeDtThresholdSecs = 0.5 -- increase this value to make knob less sensitive to sudden direction changes
-local lengthTickValues = 3 -- increase this value to increase the number of values for floating average -> larger values mean slower & smoother, 1 turns that off, must be >= 1
+local lengthTickValues = 3 -- increase this value to increase the number of values for moving average -> larger values mean slower & smoother, 1 turns that off, must be >= 1
 
 -- These are the times in sec that define the sel / knob click behavior - at the momenent double click is not used;
 local doubleClickTime = 0.5
