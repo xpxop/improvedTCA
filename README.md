@@ -105,8 +105,8 @@ secondaryModeTimeOut -> if you do not press the knob or turn the knob for this a
 
 **NEW/CHANGED in Experimental**
 
-This new approach to get a smoother knob uses floating average. The knob click to click time (DT) gets checked against 
-the floating average of n = lengthTickValues (default 3). Ff DT is smaller than floating average - maxDeviationSecs - 
+This new approach to get a smoother knob uses moving average. The knob click to click time (DT) gets checked against 
+the moving average of n = lengthTickValues (default 3). Ff DT is smaller than moving average - maxDeviationSecs - 
 this click gets ignored. Abrupt direction changes are also ignored if direction changes happen in under directionChangeDtThresholdSecs
 
 ```lua
@@ -114,7 +114,7 @@ local maxDeviationSecs = 0.1 -- increase this value to make the knob more respon
 local minHoldTimeFastTicksSecs = 0.1 -- increase this value to make the knob wait longer before switching to fast turning mode
 local minHoldTickDtSecs = 0.05 -- decrease this value to get faster fast tick speed
 local directionChangeDtThresholdSecs = 0.5 -- increase this value to make knob less sensitive to sudden direction changes
-local lengthTickValues = 3 -- increase this value to increase the number of values for floating average -> larger values mean slower & smoother, 1 turns that off, must be >= 1
+local lengthTickValues = 3 -- increase this value to increase the number of values for moving average -> larger values mean slower & smoother, 1 turns that off, must be >= 1
 ```
 
 Remark: minHoldCounterNormTicks has to be smaller than minHoldCounterFastTicks 
