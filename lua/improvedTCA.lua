@@ -269,7 +269,7 @@ elseif (PLANE_ICAO == "B742") then
 		"",                                                     -- do nothing during hold
 		"")   			                  					  -- do nothing on release
 -- FlightFactor 757 - FF do have there own commands for boeing tca
-elseif (PLANE_ICAO == "B752") or (PLANE_ICAO == "B753") then
+elseif (PLANE_ICAO == "B752") or (PLANE_ICAO == "B753") or (PLANE_ICAO == "B763") or (PLANE_ICAO == "B764") then
 	knobRefs["alt"].turnRef = "757Avionics/ap/alt_act"
 	knobRefs["hdg"].turnRef = "757Avionics/ap/hdg_act"
 	knobRefs["spd"].turnRef = "757Avionics/ap/spd_act"
