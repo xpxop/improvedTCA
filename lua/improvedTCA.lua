@@ -169,7 +169,7 @@ local maxalt = 50001
 -- Zibo Mod & Level Up 73x
 if(PLANE_ICAO == "B736") or (PLANE_ICAO == "B737") or (PLANE_ICAO == "B738" and string.find(AIRCRAFT_PATH, "737NG")) or (PLANE_ICAO == "B738" and string.find(AIRCRAFT_PATH, "800X")) or (XPLMFindDataRef("zibomod/Aircraft_Path") ~= nil) or (PLANE_ICAO == "B739") then
 	knobRefs["spd"].turnRef = "laminar/B738/autopilot/mcp_speed_dial_kts_mach"
-	knobRefs["spd"].pressRef = "laminar/B738/autopilot/mcp_speed_dial_kts_mach"
+	knobRefs["spd"].pressRef = "laminar/B738/autopilot/lvl_chg_press"
 	knobRefs["hdg"].turnRef = "laminar/B738/autopilot/mcp_hdg_dial"
 	knobRefs["hdg"].pressRef = "laminar/B738/autopilot/hdg_sel_press"
 	knobRefs["alt"].turnRef = "laminar/B738/autopilot/mcp_alt_dial"
