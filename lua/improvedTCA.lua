@@ -307,7 +307,7 @@ elseif (PLANE_ICAO == "CONC") then
 elseif (PLANE_ICAO == "MD88") then
 
 	knobRefs["hdg"].turnRef = "Rotate/md80/autopilot/hdg_sel_deg_pilot"
-	knobRefs["spd"].turnRef = "Rotate/md80/autopilot/at_target_speed"
+	knobRefs["spd"].turnRef = "Rotate/md80/autopilot/speed_sel_knob"
 	knobRefs["alt"].pressRef = "Rotate/md80/autopilot/alt_hold_sel"
 	knobRefs["hdg"].pressRef = "Rotate/md80/autopilot/hdg_sel_mode"
 	knobRefs["spd"].pressRef = "Rotate/md80/autopilot/ias_mach_sel"
