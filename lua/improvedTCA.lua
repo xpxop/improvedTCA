@@ -268,7 +268,7 @@ elseif (PLANE_ICAO == "B742") then
 		"bpitch = 2",                                  -- set DataRef on first press
 		"",                                                     -- do nothing during hold
 		"")   			                  					  -- do nothing on release
--- FlightFactor 757 - FF do have there own commands for boeing tca
+-- FlightFactor 757/767 - FF do have their own commands for Boeing TCA
 elseif (PLANE_ICAO == "B752") or (PLANE_ICAO == "B753") or (PLANE_ICAO == "B763") or (PLANE_ICAO == "B764") then
 	knobRefs["alt"].turnRef = "757Avionics/ap/alt_act"
 	knobRefs["hdg"].turnRef = "757Avionics/ap/hdg_act"
@@ -276,6 +276,20 @@ elseif (PLANE_ICAO == "B752") or (PLANE_ICAO == "B753") or (PLANE_ICAO == "B763"
 	knobRefs["alt"].pressRef = "1-sim/comm/AP/altHoldButton"
 	knobRefs["hdg"].pressRef = "1-sim/command/AP/hdgConfButton_button"
 	knobRefs["spd"].pressRef = "1-sim/comm/AP/flchButton"
+-- FlightFactor 777v2
+elseif (PLANE_ICAO == "B772") then
+    knobRefs["alt"].turnCommandOnce = true
+    knobRefs["alt"].turnRefUP = "1-sim/command/mcpAltRotary_rotary+"
+    knobRefs["alt"].turnRefDN = "1-sim/command/mcpAltRotary_rotary-"
+    knobRefs["alt"].pressRef = "1-sim/command/mcpAltHoldButton_button"
+    knobRefs["hdg"].turnCommandOnce = true
+    knobRefs["hdg"].turnRefUP = "1-sim/command/mcpHdgRotary_rotary+"
+    knobRefs["hdg"].turnRefDN = "1-sim/command/mcpHdgRotary_rotary-"
+    knobRefs["hdg"].pressRef = "1-sim/command/mcpHdgCelButton_button"
+    knobRefs["spd"].turnCommandOnce = true
+    knobRefs["spd"].turnRefUP = "1-sim/command/mcpSpdRotary_rotary+"
+    knobRefs["spd"].turnRefDN = "1-sim/command/mcpSpdRotary_rotary-"
+    knobRefs["spd"].pressRef = "1-sim/command/mcpFlchButton_button"
 -- Colimata Concorde
 elseif (PLANE_ICAO == "CONC") then
 	knobRefs["alt"].turnRef = "Colimata/CON_AP_sw_ALT_select_ft_i"
