@@ -430,6 +430,10 @@ function calcValidALT(knobRef, chg)
 	-- maxalt - 1 to be compatible with original script
 		val = maxalt - 1
 	end
+	-- fixes (hopefully) ALT overflow issues
+	if val <= 0 then
+		val = 0
+	end
 	-- TODO: this has to be moved out of this function
 	if PLANE_ICAO == "MD88" then			
 		set("Rotate/md80/autopilot/alt_sel_ft",val/100)
