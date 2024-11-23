@@ -5,9 +5,11 @@ Based on the "[Thrustmaster Boeing TCA Autopilot Control Integration Script for 
 
 # Changelog
 
-## New in v1.0.2-beta
+## New in v1.0.2
 
 * Hopefully better smoothing of the knob
+* Fix for ALT overflow (< 0)
+* Some plane config additions / improvements -> big thx to ryanov!
 
 ## New in v1.0.1
 * Thanks to suggestions form [BorisEagle](https://github.com/BorisEagle) for the zibomod you can now also assign different reverser levels (idle, 25%, 50%, 100%) to the two reverser knobs - just assign the commands "Reverser #1 (#2) xxx while holding" to the respective buttons.
