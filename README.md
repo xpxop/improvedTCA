@@ -5,6 +5,10 @@ Based on the "[Thrustmaster Boeing TCA Autopilot Control Integration Script for 
 
 # Changelog
 
+## New in v1.0.3-beta1
+
+* Changed the way plane specific config is handled - script loads now (if it exists) improvedTCA_config.lua from plane folder. "Old" configs and a "default" template available in subfolder plane_configs
+
 ## New in v1.0.2
 
 * Hopefully better smoothing of the knob
